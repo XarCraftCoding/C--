@@ -14,3 +14,4 @@ AllowShortFunctionsOnASingleLine: None
 AlwaysBreakTemplateDeclarations: Yes
 AlignConsecutiveMacros: None
 AlignEscapedNewlines: DontAlign
+...
