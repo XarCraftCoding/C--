@@ -8,6 +8,8 @@
 
 int main(int argc, char *argv[])
 {
+    bool success = false;
+    
     if (argc != 2)
     {
         std::cerr << "Incorrect usage. Correct usage is..." << std::endl;
@@ -41,8 +43,7 @@ int main(int argc, char *argv[])
         file << generator.gen_prog();
     }
     
-    system("nasm -felf64 out.asm");
-    system("ld -o out out.o");
+    generator.build_and_run();
     
     return EXIT_SUCCESS;
 }

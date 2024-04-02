@@ -11,16 +11,18 @@ public:
     {
     }
 
-    void gen_term(const NodeTerm* term) {
-        struct TermVisitor {
+    void gen_term(const NodeTerm* term)
+    {
+        struct TermVisitor
+        {
             Generator* gen;
             void operator()(const NodeTermIntLit* term_int_lit) const {
                 gen -> m_output << "    mov rax, " << term_int_lit -> int_lit.value.value() << "\n";
                 gen -> push("rax");
             }
-            void operator()(const NodeTermIdent* term_ident) const {
-                // If you are on C++20 or above, replace count(...) with contains(...)
-                if (!gen -> m_vars.count(term_ident -> ident.value.value())) {
+            void operator()(const NodeTermIdent* term_ident) const
+            {
+                if (!gen -> m_vars.contains(term_ident -> ident.value.value())) {
                     std::cerr << "Undeclared identifier: " << term_ident -> ident.value.value() << std::endl;
                     exit(EXIT_FAILURE);
                 }
@@ -29,11 +31,60 @@ public:
                 offset << "QWORD [rsp + " << (gen -> m_stack_size - var.stack_loc - 1) * 8 << "]\n";
                 gen -> push(offset.str());
             }
+            void operator() (const NodeTermParen* term_paren) const
+            {
+                gen ->gen_expr(term_paren->expr);
+            }
         };
         TermVisitor visitor({.gen = this});
         std::visit(visitor, term -> var);
     }
 
+    void gen_bin_expr(const NodeBinExpr* bin_expr)
+    {
+        struct BinExprVisitor {
+            Generator* gen;
+            void operator() (const NodeBinExprSub* sub) const {
+                gen -> gen_expr(sub -> rhs);
+                gen -> gen_expr(sub -> lhs);
+                gen -> pop("rax");
+                gen -> pop("rbx");
+                gen -> m_output << "    sub rax, rbx\n";
+                gen -> push("rax");
+            }
+            void operator() (const NodeBinExprAdd* add) const
+            {
+                gen -> gen_expr(add -> rhs);
+                gen -> gen_expr(add -> lhs);
+                gen -> pop("rax");
+                gen -> pop("rbx");
+                gen -> m_output << "    add rax, rbx\n";
+                gen -> push("rax");
+            }
+            
+            void operator() (const NodeBinExprMulti* multi) const
+            {
+                gen -> gen_expr(multi -> rhs);
+                gen -> gen_expr(multi -> lhs);
+                gen -> pop("rax");
+                gen -> pop("rbx");
+                gen -> m_output << "    mul rbx\n";
+                gen -> push("rax");
+            }
+            void operator() (const NodeBinExprDiv* div) const {
+                gen -> gen_expr(div -> rhs);
+                gen -> gen_expr(div -> lhs);
+                gen -> pop("rax");
+                gen -> pop("rbx");
+                gen -> m_output << "    div rbx\n";
+                gen -> push("rax");
+            }
+        };
+        
+        BinExprVisitor visitor { .gen = this };
+        std::visit(visitor, bin_expr -> var);
+    }
+    
     void gen_expr(const NodeExpr* expr)
     {
         struct ExprVisitor {
@@ -44,12 +95,7 @@ public:
             }
             void operator()(const NodeBinExpr* bin_expr) const
             {
-                gen -> gen_expr(bin_expr -> add -> lhs);
-                gen -> gen_expr(bin_expr -> add -> rhs);
-                gen -> pop("rax");
-                gen -> pop("rbx");
-                gen -> m_output << "    add rax, rbx\n";
-                gen -> push("rax");
+                gen -> gen_bin_expr(bin_expr);
             }
         };
 
@@ -70,8 +116,7 @@ public:
             }
             void operator()(const NodeStmtLet* stmt_let) const
             {
-                // If you are on C++20 or above, replace count(...) with contains(...)
-                if (gen -> m_vars.count(stmt_let->ident.value.value())) {
+                if (gen -> m_vars.contains(stmt_let->ident.value.value())) {
                     std::cerr << "Identifier already used: " << stmt_let->ident.value.value() << std::endl;
                     exit(EXIT_FAILURE);
                 }
@@ -96,6 +141,14 @@ public:
         m_output << "    mov rdi, 0\n";
         m_output << "    syscall\n";
         return m_output.str();
+    }
+    
+    void build_and_run()
+    {
+        system("printf \"\033[1;31mC--:\033[0m In directory \"; pwd\nprintf \"\033[1;31mC--:\033[0m Building & Running...\n\"");
+        system("nasm -felf64 out.asm");
+        system("ld -o out out.o");
+        system("./out; printf \"\033[1;31mC--:\033[0m Process finished with exit code $?\"");
     }
 
 private:
