@@ -1,6 +1,6 @@
 # Grammar
 
-**Warning:** This doesn't work on GitHub. If you want to see it, you will have to open this file in Visual Studio Code.
+**Warning:** This doesn't work on GitHub. If you want to see it, you will have to open this file in ***Visual Studio Code*** or any other text editor that supports ***Math Mode***.
 
 $$
 \begin{align}
