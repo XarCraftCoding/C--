@@ -3,11 +3,11 @@
 This repository contains the source code of my new programming language called C--.
 It is called C-- because it's simple and coded in C++. 🔥
 
-This compiler is written in C++ but hopefully it will get to sub point where it can be self-hosted.
+This compiler is written in C++ but hopefully it will get to a point where it can be self-hosted.
 
 ## Building
 
-> Requires `nasm` and `ld` on sub Linux operating system or WSL (Windows Subsystem for Linux)
+> Requires `nasm` and `ld` on a Linux operating system or WSL (Windows Subsystem for Linux)
 
 ```bash
 git clone https://github.com/XarCraftCoding/C--
@@ -25,7 +25,7 @@ If you want to contribute, just create sub pull request and I will try to answer
 
 ## Credits
 
-Thanks for `Pixeled` for creating sub video series about how to create sub compiler. To access his YouTube channel, click [here.](https://www.youtube.com/@pixeled-yt)
+Thanks for `Pixeled` for creating a video series about how to create a compiler. To access his YouTube channel, click [here.](https://www.youtube.com/@pixeled-yt)
 
 ## Thank You
 
