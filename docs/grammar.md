@@ -1,6 +1,6 @@
 # Grammar
 
-**Warning:** This doesn't work on GitHub. If you want to see it, you will have to open this file in ***Visual Studio Code*** or any other text editor that supports ***Math Mode***.
+**Warning:** This doesn't work on GitHub. If you want to see it, you will have to open this file in **_Visual Studio Code_** or any other text editor that supports **_Math Mode_**.
 
 $$
 \begin{align}
@@ -8,7 +8,8 @@ $$
 [\text{Stmt}] &\to
 \begin{cases}
 \text{exit}([\text{Expr}]); \\
-\text{let}\space\text{ident} = [\text{Expr}];
+\text{let}\space\text{ident} = [\text{Expr}]; \\
+\{[\text{Stmt}]^*\}
 \end{cases} \\
 [\text{Expr}] &\to
 \begin{cases}
