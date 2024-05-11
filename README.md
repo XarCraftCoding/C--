@@ -21,7 +21,7 @@ Executable will be `c--` in the `build/` directory.
 
 ## Contributing
 
-If you want to contribute, just create sub pull request and I will try to answer all of them.
+If you want to contribute, just create a pull request and I will try to answer all of them.
 
 ## Credits
 
@@ -29,5 +29,5 @@ Thanks for `Pixeled` for creating a video series about how to create a compiler.
 
 ## Thank You
 
-Thank you for reading the ___README.md___.
+Thank you for reading the **_README.md_**.
 If you want to support me, you can consider following my YouTube channel. To access it, click [here.](https://www.youtube.com/@xarcraft2021)

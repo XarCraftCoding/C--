@@ -1,4 +1,4 @@
-# Output Codes
+# Exit Codes
 
 This article will inform you about the error codes.
 
