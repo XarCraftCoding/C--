@@ -1,6 +1,16 @@
+// Variables
 let y = (10 - 2 * 3) / 2;
 let x = 1;
-if (y) {
-    exit(69);
+
+/*
+    X - 1 is 0,
+    so this if statement
+    is always considered
+    true.
+*/
+
+if (x - 1) {
+    exit(x - 1); // 0
 }
-exit(1);
+
+exit(y); // 2
