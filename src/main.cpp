@@ -8,8 +8,6 @@
 
 int main(int argc, char *argv[])
 {
-    bool success = false;
-    
     if (argc != 2)
     {
         std::cerr << "Incorrect usage. Correct usage is..." << std::endl;
@@ -35,15 +33,16 @@ int main(int argc, char *argv[])
         std::cerr << "Invalid program" << std::endl;
         exit(EXIT_FAILURE);
     }
-    
-    Generator generator(prog.value());
-    
-    {
-        std::fstream file("out.asm", std::ios::out);
-        file << generator.gen_prog();
-    }
-    
-    generator.build_and_run();
+	
+	Generator generator(prog.value());
+	
+	{
+		std::fstream file("out.asm", std::ios::out);
+		file << generator.gen_prog();
+	}
+	
+	// Build & Run
+	generator.build_and_run();
     
     return EXIT_SUCCESS;
 }
