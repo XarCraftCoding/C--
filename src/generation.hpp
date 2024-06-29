@@ -2,6 +2,7 @@
 
 #include "parser.hpp"
 #include <cassert>
+#include <algorithm>
 
 class Generator {
 public:
@@ -156,15 +157,6 @@ public:
         StmtVisitor visitor { .gen = *this };
         std::visit(visitor, stmt->var);
     }
-    
-    void build_and_run()
-    {
-        system("printf \"\033[1;31mC--:\033[0m In directory \"; pwd\nprintf \"\033[1;31mC--:\033[0m Building & "
-               "Running...\n\"");
-        system("nasm -felf64 out.asm");
-        system("ld -o out out.o");
-        system("./out; printf \"\033[1;31mC--:\033[0m Process finished with exit code $?\"");
-    }
 
     [[nodiscard]] std::string gen_prog()
     {
@@ -178,6 +170,15 @@ public:
         m_output << "    mov rdi, 0\n";
         m_output << "    syscall\n";
         return m_output.str();
+    }
+    
+    void build_and_run()
+    {
+        system("printf \"\033[1;31mC--:\033[0m In directory \"; pwd\nprintf \"\033[1;31mC--:\033[0m Building & "
+               "Running...\n\"");
+        system("nasm -felf64 out.asm");
+        system("ld -o out out.o");
+        system("./out; printf \"\033[1;31mC--:\033[0m Process finished with exit code $?\"");
     }
 
 private:
